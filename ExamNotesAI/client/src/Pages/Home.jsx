@@ -45,7 +45,9 @@ function Home() {
               Generates exam-focoused notes, project documentation,
               flow diagrams and revisio-ready content using AI -faster, cleaner and smarter.
             </motion.p>
-            <motion.button
+          </motion.div>
+
+           <motion.button
             onClick={()=>navigate("/notes")}
               whileHover={{
                 scale: 1.07
@@ -56,7 +58,7 @@ function Home() {
                               border border-white/10 text-white font-semibold text-lg shadow-[0_25px_60px_rgba(0,0,0,0.7)]">
               Get Started 
             </motion.button>
-          </motion.div>
+            
         </div>
 
         <motion.div 
@@ -109,7 +111,7 @@ function Feature({icon,titel,des}){
       opacity-0 hover:opacity-100 transition-opacity pointer-events-none"/>
 
          <div className="relative z-10" style={{transform:"translatez(30px)"}}>
-            <div className="text-4xlmb-3">{icon}</div>
+            <div className="text-4xl mb-3">{icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{titel}</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">{des}</p>
             

@@ -4,7 +4,7 @@ export const getCurrentuser = async(req ,res)=>{
         const userId = req.userId
         const user = await usermodel.findById(userId)
         if(!user){
-            return re.status(404).json({message:"current user is not found"})
+            return res.status(404).json({message:"current user is not found"})
         }
         return res.status(200).json(user)
     }catch(error){

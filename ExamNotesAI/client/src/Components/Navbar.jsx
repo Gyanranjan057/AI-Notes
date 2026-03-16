@@ -72,7 +72,7 @@ function Navbar(){
                   exit={{opacity:0,y:-10,scale:0.95}}
                   transition={{duration:0.3}}
                 className="absolute right-[-50px] mt-4 w-64 rounded-2xl bg-black/90 backdrop-blur-xl
-                border border-white/10 shadow-[]0_25px_60px_rgba(0,0,0,0.7) p-4 text-white"> 
+                border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.7)] p-4 text-white"> 
 
                         <h4 className="font-semibold mb-2">Buy Credits</h4>
                         <p className="text-sm text-gray-300 mb-4">Use credits to generate AI notes, diagrams & PDFs.</p>

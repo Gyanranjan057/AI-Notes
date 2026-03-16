@@ -33,7 +33,7 @@ const handleGoogleAuth = async() =>{
             transition={{duration:1.5}}
             className="max-w-7xl mx-auto mt-8 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 px-8 py-6 shadow-[0_20px_45px_rgba(0,0,0,0.6)]">
             
-           <h1 className="text-2xl front-bold
+           <h1 className="text-2xl font-bold
            bg-linear-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">ExamNotes AI</h1>
            <p className='text-sm text-gray-300 mt-1'>AI-Powered exam-oriented notes & revision</p>
          </motion.header>
@@ -111,7 +111,7 @@ function Feature({icon,titel,des}){
       opacity-0 hover:opacity-100 transition-opacity pointer-events-none"/>
 
          <div className="relative z-10" style={{transform:"translatez(30px)"}}>
-            <div className="text-4xlmb-3">{icon}</div>
+            <div className="text-4xl mb-3">{icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{titel}</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">{des}</p>
             

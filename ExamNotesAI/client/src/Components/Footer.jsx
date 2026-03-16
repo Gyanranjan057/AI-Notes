@@ -43,7 +43,7 @@ function Footer(){
                             ExamNotes <span className="text-gray-400">AI</span>
                         </span>
                     </div>
-                    <p className="text-sm text-gray-300 max-w--sm"> ExamNotes AI helps students generate exa,-focused notes,
+                    <p className="text-sm text-gray-300 max-w-sm"> ExamNotes AI helps students generate exa,-focused notes,
                         revision material, diagrams, and printable PDFs using AI.
                     </p>
                  </motion.div>
