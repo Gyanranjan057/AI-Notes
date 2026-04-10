@@ -39,7 +39,7 @@ export const generateGeminiResponse = async (prompt) => {
       .replace(/```/g,"")
       .trim();
       return JSON.parse(cleanText);
-    //   console.log(cleanText);
+    //   console.log(cleanText) ;
       
 
     }catch(error){
