@@ -1,70 +1,188 @@
-import PDFDocument from "pdfkit";
+
+
+import puppeteer from "puppeteer";
+import { marked } from "marked";
 
 export const pdfDownload = async (req, res) => {
-        const { result } = req.body;
+  try {
+    const { result } = req.body;
 
-        if (!result) {
-            return res.status(400).json({ error: "No content provided" });
+    if (!result) {
+      return res.status(400).json({ error: "No content provided" });
+    }
+
+    const notesHTML = marked(result.notes || "");
+
+   
+    let extractedTitle = "Notium Notes";
+
+    const match = result.notes?.match(/#\s*(.*)/);
+    if (match && match[1]) {
+      extractedTitle = match[1];
+    } else {
+      extractedTitle = result.subTopics
+        ? Object.values(result.subTopics)[0]?.[0] || "Notium Notes"
+        : "Notium Notes";
+    }
+
+    const html = `
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          padding: 40px;
+          color: #111827;
+          line-height: 1.6;
         }
-        const doc = new PDFDocument({ margin: 50 })
-        res.setHeader("Content-Type", "application/pdf")
-        res.setHeader("Content-Disposition", 'attachment; filename="ExamNotesAI.pdf"')
-        doc.pipe(res)
 
-        //Title
-        doc.fontSize(20).text("ExamNotes AI", { align: "center" });
-        doc.moveDown();
-        doc.fontSize(14).text(`Importance:${result.importance}`);
-        doc.moveDown();
+        h1 {
+          text-align: center;
+          font-size: 26px;
+          font-weight: bold;
+          color: #4f46e5;
+          margin-bottom: 10px;
+        }
 
-        //Sub Topics
-        doc.fontSize(16).text("Sub Topics");
-        doc.moveDown(0.5);
-        Object.entries(result.subTopics).forEach(([star, topics]) => {
-            doc.moveDown(0.5);
-            doc.fontSize(13).text(`${star} Topics:`);
+        h2 {
+          color: #4f46e5;
+          margin-top: 25px;
+        }
 
-            topics.forEach((t) => {
-                doc.fontSize(12).text(`• ${t}`);
-            });
-        });
+        .section {
+          margin-bottom: 20px;
+        }
 
-        doc.moveDown();
+        ul {
+          padding-left: 20px;
+        }
 
-        //Notes
-        doc.fontSize(16).text("Notes");
-        doc.moveDown(0.5);
-        doc.fontSize(12).text(result.notes.replace(/[#*]/g, ""));
+        .badge {
+          text-align: center;
+          color: gray;
+          margin-bottom: 20px;
+        }
 
-        doc.moveDown();
+        .divider {
+          border-top: 1px solid #e5e7eb;
+          margin: 20px 0;
+        }
 
-        //Revision Points
-        doc.fontSize(16).text("Revision Points");
-        doc.moveDown(0.5);
-        result.revisionPoints.forEach((p) => {
-            doc.fontSize(12).text(`• ${p}`);
-        });
+        .box {
+          background: #f9fafb;
+          padding: 15px;
+          border-radius: 10px;
+          margin-top: 10px;
+        }
+      </style>
+    </head>
 
-        doc.moveDown();
+    <body>
 
-        //Questions
-        doc.fontSize(16).text("Important Questions");
-        doc.moveDown(0.5);
+      <!-- Dynamic Heading -->
+      <h1>${extractedTitle}</h1>
+      <div class="badge">Importance: ${result.importance}</div>
+      <div class="divider"></div>
 
-        doc.fontSize(13).text("Short Questions:");
-        result.questions.short.forEach((q) => {
-            doc.fontSize(12).text(`• ${q}`);
-        });
-        
-        doc.moveDown(0.5);
-        doc.fontSize(13).text("Long Questions:");
-        result.questions.long.forEach((q) => {
-            doc.fontSize(12).text(`• ${q}`);
-        });
-        
-        doc.moveDown(0.5);
-        doc.fontSize(13).text("Diagram Question:");
-        doc.fontSize(12).text(result.questions.diagram);
+      <!-- Sub Topics -->
+      <div class="section">
+        <h2>⭐ Sub Topics</h2>
+        ${Object.entries(result.subTopics || {})
+          .map(
+            ([star, topics]) => `
+            <div class="box">
+              <b>${star} Topics:</b>
+              <ul>
+                ${(topics || []).map((t) => `<li>${t}</li>`).join("")}
+              </ul>
+            </div>
+          `
+          )
+          .join("")}
+      </div>
 
-        doc.end();
-}
+      <!-- Notes -->
+      <div class="section">
+        <h2>📝 Notes</h2>
+        <div class="box">
+          ${notesHTML}
+        </div>
+      </div>
+
+      <!-- Revision -->
+      <div class="section">
+        <h2>⚡ Revision Points</h2>
+        <div class="box">
+          <ul>
+            ${(result.revisionPoints || [])
+              .map((p) => `<li>${p}</li>`)
+              .join("")}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Questions -->
+      <div class="section">
+        <h2>❓ Important Questions</h2>
+
+        <div class="box">
+          <b>Short Questions:</b>
+          <ul>
+            ${(result.questions?.short || [])
+              .map((q) => `<li>${q}</li>`)
+              .join("")}
+          </ul>
+        </div>
+
+        <div class="box">
+          <b>Long Questions:</b>
+          <ul>
+            ${(result.questions?.long || [])
+              .map((q) => `<li>${q}</li>`)
+              .join("")}
+          </ul>
+        </div>
+
+        <div class="box">
+          <b>Diagram Question:</b>
+          <p>${result.questions?.diagram || ""}</p>
+        </div>
+
+      </div>
+
+    </body>
+    </html>
+    `;
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setContent(html, { waitUntil: "domcontentloaded" });
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: "20px",
+        bottom: "20px",
+        left: "20px",
+        right: "20px",
+      },
+    });
+
+    await browser.close();
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=Notium_Notes.pdf",
+    });
+
+    res.send(pdfBuffer);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "PDF generation failed" });
+  }
+};

@@ -23,3 +23,19 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+*.Auth.jsx
+
+
+# Ignore frontend pages
+
+ExamNotesAI/client/src/Pages/Home.jsx
+ExamNotesAI/client/src/Pages/Pricing.jsx
+
+
+
+# Ignore specific components
+ExamNotesAI/client/src/Components/Navbar.jsx
+ExamNotesAI/client/src/Components/TopicForm.jsx
+
+# Ignore specific pages
+ExamNotesAI/client/src/Pages/Notes.jsx

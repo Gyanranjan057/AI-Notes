@@ -25,9 +25,8 @@ mermaid.initialize({
     let index = 0;
     const used =new Map();
     return diagram.replace(/\[(.*?)\]/g, (match, label) =>{
-        //normalize label for key
         const key = label.trim();
-        //reuse same node if label already seen
+       
         if(used.has(key)){
             return used.get(key);
         }
@@ -53,7 +52,6 @@ function MermaidSetup({diagram}){
                     .substring(2,9)
                 }`;
 
-                // sanitize before render
                 const safeChart = autoFixNodes(cleanMermaidChart(diagram));
                 const { svg } = await mermaid.render(uniqueId,safeChart);
                 containerRef.current.innerHTML = svg;
