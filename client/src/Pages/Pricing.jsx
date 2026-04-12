@@ -1,8 +1,10 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "motion/react"
-import axios from "axios";
 import { serverurl } from "../App";
+import { linkWithCredential } from "firebase/auth";
+import axios from "axios";
+
 
 function Pricing() {
     const navigate = useNavigate()
@@ -14,14 +16,19 @@ function Pricing() {
         try {
             setPayingAmount(amount)
             setPaying(true)
-            const result = await axios.post(serverurl + "/api/credit/order", {amount},{withCredentials:true})
+
+            const result = await axios.post(serverurl + "/api/credit/order", {amount}, {withCredentials:true})
+
             if(result.data.url){
                 window.location.href = result.data.url
             }
-             setPaying(false)
+
+            setPaying(false);
+
         } catch (error) {
-            setPaying(false)
+            setPaying(false);
             console.log(error);
+            
         }
     }
     return (
@@ -42,9 +49,9 @@ function Pricing() {
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
                 <PricingCard
                     title="Starter"
-                    price="₹100"
-                    amount={100}
-                    credits="50 Credits"
+                    price="50"
+                    amount={50}
+                    credits="100 Credits"
                     description="Perfect for quick revisions"
                     features={[
                         "Generate AI notes",
@@ -61,9 +68,9 @@ function Pricing() {
                 <PricingCard
                     popular
                     title="Popular"
-                    price="₹200"
-                    amount={200}
-                    credits="120 Credits"
+                    price="₹100"
+                    amount={100}
+                    credits="220 Credits"
                     description="Best value for students"
                     features={[
                         "All Starter features",
@@ -79,9 +86,9 @@ function Pricing() {
 
                 <PricingCard
                     title="Pro learner"
-                    price="₹500"
-                    amount={500}
-                    credits="300 Credits"
+                    price="₹200"
+                    amount={200}
+                    credits="460 Credits"
                     description="For serious exam preparation"
                     features={[
                         "Maximum credit value",
