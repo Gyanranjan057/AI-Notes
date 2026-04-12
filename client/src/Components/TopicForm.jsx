@@ -15,10 +15,12 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
     const dispatch = useDispatch()
 
     const handleSubmit = async () => {
-        if (!topic.trim()) {
+        if (!topic.trim() || !classLevel.trim() || !examType.trim()) {
             setError("please enter the topic")
             return;
         }
+
+
         setError("")
         setLoading(true)
         setResult(null)
@@ -30,15 +32,11 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
                 revisionMode,
                 includeDiagram,
                 includeChart
-            })
-            setResult(result.data)
-            setLoading(false)
-            setClassLevel("")
-            setTopic("")
-            setExamType("")
-            setIncludeChart(false)
-            setRevisionMode(false)
-            setIncludeDiagram(false)
+            });
+            if(result?.data){
+                setResult(result.data);
+            }
+           
 
             // if(result){
             //     setResult(result);
@@ -47,11 +45,33 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
             if(typeof result?.creditsLeft === "number"){
                 dispatch(updateCredits(result.creditsLeft))
             }
-        } catch (error) {
-            console.log(error);
-            setError("Failed to fetch notes from server");
-            setLoading(false)
-        }
+            setLoading(false);
+
+        
+            setClassLevel("")
+            setTopic("")
+            setExamType("")
+            setIncludeChart(false)
+            setRevisionMode(false)
+            setIncludeDiagram(false)
+        } 
+        // catch (error) {
+        //     console.log(error);
+        //     setError("Failed to fetch notes from server");
+        //     setLoading(false)
+        // }
+        catch (error) {
+    console.log("ERROR:", error.response?.data || error.message);
+
+    setError(
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to fetch notes from server"
+    );
+
+    setResult(null);
+    setLoading(false);
+}
     }
 
     useEffect(() => {
