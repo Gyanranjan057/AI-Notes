@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { FcGoogle } from "react-icons/fc";
@@ -117,9 +119,10 @@ const result = await axios.post(
 
       {/* MAIN */}
       <main className="max-w-7xl mx-auto py-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+
         {/* LEFT */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }} 
+          initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
         >
@@ -155,7 +158,7 @@ const result = await axios.post(
 
         {/* RIGHT */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <Feature icon="🎁" title="50 Free Credits" des="Start with 50 credits to generate notes without paying." />
+          <Feature icon="🎁" title="300 Free Credits" des="Start with 300 credits to generate notes without paying." />
           <Feature icon="📘" title="Exam Notes" des="High-yield, revision-ready exam-oriented notes." />
           <Feature icon="📂" title="Project Notes" des="Well-Structured documentation for assignments & projects." />
           <Feature icon="📊" title="Charts & Graphs" des="Auto-generated diagrams,charts and flow graphs." />

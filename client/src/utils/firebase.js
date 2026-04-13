@@ -1,17 +1,19 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
+import{getAuth, GoogleAuthProvider} from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
-  authDomain: "ai-notes-b25b3.firebaseapp.com",
-  projectId: "ai-notes-b25b3",
-  storageBucket: "ai-notes-b25b3.firebasestorage.app",
-  messagingSenderId: "270867355389",
-  appId: "1:270867355389:web:e4e0f9b454122878061094"
+  authDomain: "authai-notes.firebaseapp.com",
+  projectId: "authai-notes",
+  storageBucket: "authai-notes.firebasestorage.app",
+  messagingSenderId: "548485119350",
+  appId: "1:548485119350:web:5844ccd059c4f2cfad4e57"
 };
 
 // Initialize Firebase

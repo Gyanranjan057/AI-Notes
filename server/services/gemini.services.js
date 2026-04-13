@@ -1,5 +1,4 @@
 
-
 const Gemini_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 
 export const generateGeminiResponse = async (prompt) => {
@@ -39,7 +38,7 @@ export const generateGeminiResponse = async (prompt) => {
       .replace(/```/g,"")
       .trim();
       return JSON.parse(cleanText);
-    //   console.log(cleanText) ;
+    //   console.log(cleanText);
       
 
     }catch(error){

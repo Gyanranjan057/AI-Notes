@@ -4,16 +4,18 @@ import Auth from './Pages/Auth'
 import Notes from './Pages/Notes'
 import History from './Pages/History'
 import Pricing from './Pages/Pricing'
+
 import{Navigate, Route,Routes}from'react-router-dom'
 import { getCurrentuser } from './services/api'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import PaymentSucess from './Pages/PaymentSuccess'
+import PaymentSuccess from './Pages/PaymentSuccess'
 import PaymentFailed from './Pages/PaymentFailed'
 export const serverurl = "http://localhost:8000"
 
 function App(){
   const dispatch = useDispatch()
+  
   useEffect(()=>{
     getCurrentuser(dispatch)
   },[dispatch])
@@ -29,8 +31,10 @@ function App(){
 <Route path='/history' element={userData ? <History/>:<Navigate to="/"replace/>}/> 
 <Route path='/notes' element={userData ? <Notes/> :<Navigate to="/"replace/>}/> 
 <Route path='/pricing' element={userData ? <Pricing/> :<Navigate to="/"replace/>}/> 
-<Route path='payment-sucess' element={<PaymentSucess/>}/>
-<Route path='payment-failed' element={<PaymentFailed/>}/>
+
+<Route path="/payment-success" element={<PaymentSuccess/>} />
+<Route path="/payment-failed" element={<PaymentFailed/>} />
+
 
    </Routes>
    
