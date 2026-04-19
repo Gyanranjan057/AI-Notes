@@ -38,10 +38,6 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
             }
            
 
-            // if(result){
-            //     setResult(result);
-            // }
-
             if(typeof result?.creditsLeft === "number"){
                 dispatch(updateCredits(result.creditsLeft))
             }
@@ -55,11 +51,6 @@ function TopicForm({ setResult, setLoading, loading, setError }) {
             setRevisionMode(false)
             setIncludeDiagram(false)
         } 
-        // catch (error) {
-        //     console.log(error);
-        //     setError("Failed to fetch notes from server");
-        //     setLoading(false)
-        // }
         catch (error) {
     console.log("ERROR:", error.response?.data || error.message);
 

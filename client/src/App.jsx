@@ -4,6 +4,8 @@ import Auth from './Pages/Auth'
 import Notes from './Pages/Notes'
 import History from './Pages/History'
 import Pricing from './Pages/Pricing'
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 import{Navigate, Route,Routes}from'react-router-dom'
 import { getCurrentuser } from './services/api'
@@ -20,8 +22,11 @@ function App(){
     getCurrentuser(dispatch)
   },[dispatch])
 
-  const {userData} = useSelector((state)=>state.user)
+  const {userData, loading} = useSelector((state)=>state.user)
   // console.log(userData);
+  if(loading){
+  return <div>Loading...</div>
+}
   
   return(
  

@@ -25,11 +25,6 @@ export const generateNotes = async (req, res) => {
       return res.status(400).json({ message: "user is not found = false" });
     }
 
-    // if (user.credits === undefined || user.credits === null) {
-    //   user.credits = 300;
-    //   await user.save();
-    // }
-
     if (typeof user.credits !== "number") {
     user.credits = 300;
     await user.save();

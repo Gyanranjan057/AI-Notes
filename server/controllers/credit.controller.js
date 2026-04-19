@@ -22,7 +22,7 @@ export const createCreditsOrder = async ( req, res) => {
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
             payment_method_types: ["card"],
-            success_url: `${process.env.CLIENT_URL}/payment-sucess`,
+            success_url: `${process.env.CLIENT_URL}/payment-success`,
             cancel_url: `${process.env.CLIENT_URL}/payment-failed`,
             line_items: [
                 {
@@ -47,31 +47,51 @@ export const createCreditsOrder = async ( req, res) => {
     }
 }
 
+
 export const stripeWebhook = async (req, res) => {
-    const sig = req.headers["stripe-signature"]
+    console.log(" Webhook hit");
+
+    const sig = req.headers["stripe-signature"];
     let event;
+
     try {
         event = stripe.webhooks.constructEvent(
             req.body,
             sig,
             process.env.STRIPE_WEBHOOK_SECRET
-        )
+        );
     } catch (error) {
-        console.log("❌ Webhook signature error:", error.message);
-        return res.status(400).send("webhook Error");
+        console.log("❌ Signature error:", error.message);
+        return res.status(400).send("Webhook Error");
     }
-  if(event.type === "checkout.session.completed"){
-    const session = event.data.object;
-    const userId = session.metadata.userId;
-    const creditsToAdd = Number(session.metadata.credits);
 
-    if(!userId || !creditsToAdd){
-        return res.status(400).json({ message: "Invalid metadata" });
+    console.log("Event:", event.type);
+
+    if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+
+        console.log(" Payment session:", session);
+
+        const userId = session.metadata.userId;
+        const creditsToAdd = Number(session.metadata.credits);
+
+        console.log(" User:", userId, "Credits:", creditsToAdd);
+
+        if (!userId || !creditsToAdd) {
+            return res.status(400).json({ message: "Invalid metadata" });
+        }
+
+        await usermodel.findByIdAndUpdate(
+            userId,
+            {
+                $inc: { credits: creditsToAdd },
+                $set: { isCreditAvailable: true },
+            },
+            { new: true } 
+        );
+
+        console.log("🎉 Credits updated!");
     }
-    const user = await usermodel.findByIdAndUpdate(userId, {
-        $inc: { credits: creditsToAdd },
-        $set: { isCreditAvailable: true },
-    },{new:ture})
-  }
-  res.json({ received: true });
-}
+
+    res.json({ received: true });
+};

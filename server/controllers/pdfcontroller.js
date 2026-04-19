@@ -154,7 +154,11 @@ export const pdfDownload = async (req, res) => {
     </html>
     `;
 
-    const browser = await puppeteer.launch();
+   
+const browser = await puppeteer.launch({
+  headless: "new",
+  args: ["--no-sandbox", "--disable-setuid-sandbox"], // ✅ REQUIRED
+});
     const page = await browser.newPage();
 
     await page.setContent(html, { waitUntil: "domcontentloaded" });
