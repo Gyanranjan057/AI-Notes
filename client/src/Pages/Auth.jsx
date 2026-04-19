@@ -161,7 +161,7 @@ function Auth() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-white text-black px-8">
-      //* HEADER ..........
+      
       <motion.header
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -176,10 +176,10 @@ function Auth() {
         </p>
       </motion.header>
 
-      //* MAIN............................ 
+      
       <main className="max-w-7xl mx-auto py-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
-        //* LEFT ......................
+      
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
@@ -210,7 +210,7 @@ function Auth() {
           </p>
         </motion.div>
 
-        //* RIGHT .............
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <Feature icon="🎁" title="300 Free Credits" des="Start with 300 credits to generate notes without paying." />
           <Feature icon="📘" title="Exam Notes" des="High-yield, revision-ready exam-oriented notes." />
@@ -220,7 +220,7 @@ function Auth() {
         </div>
       </main>
 
-      //* MODAL .........
+    
       {showModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-2xl p-8 w-[370px] relative">
@@ -244,7 +244,7 @@ function Auth() {
                 >
 
 
-                  //* Back button ............ 
+                  
                   <button
                     onClick={resetForgot}
                     className="flex items-center gap-1 text-white/50 hover:text-white text-sm mb-5 transition-colors"
@@ -427,7 +427,7 @@ function Auth() {
                     className={inputCls}
                   />
 
-                  //* Forgot Password ..................
+                 
                   {!isSignup && (
                     <p
                       onClick={() => { setIsForgot(true); setForgotStep("email"); }}
