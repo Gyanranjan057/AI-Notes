@@ -36,7 +36,7 @@ export const createCreditsOrder = async ( req, res) => {
                     quantity: 1,
                 },
             ],
-            metadata: {
+            metadata: { 
                 userId,
                 credits: CREDIT_MAP[amount],
             },
