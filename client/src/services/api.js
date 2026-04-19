@@ -6,14 +6,14 @@ export const getCurrentuser = async(dispatch)=>{
         const result = await axios.get(serverurl + "/api/user/currentuser", {withCredentials:true})
         dispatch(setuserData(result.data))
     }catch(error){
-          console.log(error);
+          console.log("User not logged in");
     }
 }
 
 export const generateNotes = async (payload) => {
     try {
         const result = await axios.post(serverurl+ "/api/notes/generate-notes", payload, {withCredentials:true})
-        console.log(result.data);
+        // console.log(result.data);
         return result.data
         
     } catch (error) {

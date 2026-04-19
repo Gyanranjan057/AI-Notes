@@ -22,7 +22,7 @@ function History() {
         const myNotes = async () => {
             try {
                 const res = await axios.get(serverurl + "/api/notes/getnotes", { withCredentials: true })
-                console.log(res.data);
+                // console.log(res.data);
                 setTopics(Array.isArray(res.data) ? res.data : [])
             } catch (error) {
                 console.log(error);
@@ -60,8 +60,8 @@ function History() {
             border border-white/10 px-8 py-6 items-start flex justify-between
             md:items-center gap-4 flex-wrap shadow-[0_20px_45px_rgba(0,0,0,0.6)]">
                 <div onClick={() => navigate("/")} className="cursor-pointer">
-                    <h1 className="text-2xl font-bold
-                    bg-linear-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">ExamNotes AI</h1>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+  Nexora</h1>
                     <p className='text-sm text-gray-300 mt-1'>AI-Powered exam-oriented notes & revision</p>
                 </div>
 
@@ -116,7 +116,7 @@ function History() {
                                 <hr className="border-white/10 mb-4" />
                                 <h2 className="mb-4 text-lg font-bold bg-gradient-to-r from-white
                                 via-gray-300 to-white bg-clip-text text-transparent">
-                                    📚 Your Notes
+                                     Your Notes
                                 </h2>
 
                                 {topics.length === 0 && (

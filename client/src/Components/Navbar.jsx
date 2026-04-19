@@ -10,7 +10,8 @@ import { serverurl } from "../App"
 
 function Navbar(){
     const {userData} =useSelector((state)=>state.user) 
-    const credits = userData . credits
+    // const credits = userData . credits
+    const credits = userData?.credits || 0
     const [ShowCredits ,setShowCredits] = useState(false)
       const [ShowProfile ,setShowProfile] = useState(false)
      const navigate = useNavigate()
@@ -37,12 +38,12 @@ function Navbar(){
         flex items-center justify-between px-8 py-4">
 
              <div className="flex items-center gap-3">
-                    <img src={logo} alt="examnotes" className="w-9 h-9"/>
-                    <span className="text-lg hidden md:block font-semibold text-white ">
-                       ExamNotes <span className="text-gray-400">AI</span>  
-                    </span>        
-                          
-                 </div>
+  <img src={logo} alt="examnotes" className="w-9 h-9"/>
+
+  <span className="text-2xl font-bold bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+  Nexora
+</span>
+</div>
              
              <div className="flex items-center gap-6 relative">
                 <div className="relative">
@@ -90,9 +91,13 @@ function Navbar(){
                     whileTap={{scale:0.97}}
                     className="flex items-center justify-center gap-1 px-4 py-2 rounded-full bg-white/10 border 
                     border-white/20 text-sm text-white shadow-md cursor-pointer"> 
-                    <span className="text-lg">{userData?.name.slice(0,1).toUpperCase()} 
+                    {/* <span className="text-lg">{userData?.name.slice(0,1).toUpperCase()} 
                         </span>
- 
+  */}
+
+  <span className="text-lg">
+  {userData?.name ? userData.name.slice(0,1).toUpperCase() : "U"}
+</span>
                 </motion.div>
                 <AnimatePresence>
                 {ShowProfile && 

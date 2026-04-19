@@ -51,9 +51,9 @@ function Footer(){
                  <div className="text-center">
                     <ul className="space-y-2 text-sm">
                         <h1 className="text-sm font-semibold text-white mb-4">Quick Links</h1>
-                        <li onClick={()=>navigate("/notes")} className="text-gray-300 hover:text-white transition-colors">Notes</li>
-                        <li onClick={()=>navigate("/history")} className="text-gray-300 hover:text-white transition-colors">History</li>
-                        <li onClick={()=>navigate("/pricing")} className="text-gray-300 hover:text-white transition-colors">Add credits</li>
+                        <li onClick={()=>navigate("/notes")} className="text-gray-300 hover:text-white transition-colors cursor-pointer">Notes</li>
+                        <li onClick={()=>navigate("/history")} className="text-gray-300 hover:text-white transition-colors cursor-pointer ">History</li>
+                        <li onClick={()=>navigate("/pricing")} className="text-gray-300 hover:text-white transition-colors cursor-pointer ">Add credits</li>
 
                     </ul>
                    </div>
@@ -61,7 +61,7 @@ function Footer(){
                     <div className="text-center">
                     <ul className="space-y-2 text-sm">
                         <h1 className="text-sm font-semibold text-white mb-4">Support & Account</h1>
-                        <li onClick={handleSignOut} className="text-red-400 hover:text-red-300 transition-colors">SignOut</li>
+                        <li onClick={handleSignOut} className="text-red-400 hover:text-red-300 transition-colors cursor-pointer ">SignOut</li>
                         <li className="text-gray-300 hover:text-white tr">Support@examnotes.com</li>
                     </ul>
                    </div>

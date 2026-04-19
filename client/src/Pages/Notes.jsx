@@ -26,8 +26,8 @@ function Notes() {
             items-start flex md:items-center justify-between gap-4 flex-col md:flex-row">
 
                 <div onClick={() => navigate("/")} className="cursor-pointer">
-                    <h1 className="text-2xl font-bold
-                    bg-linear-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">ExamNotes AI</h1>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
+  Nexora</h1>
                     <p className='text-sm text-gray-300 mt-1'>AI-Powered exam-oriented notes & revision</p>
                 </div>
 
@@ -49,7 +49,7 @@ function Notes() {
                      className="px-4 py-3 rounded-full text-sm font-medium
                      bg-white/10 border border-white/20 text-white
                      hover:bg-white/20 transition flex items-center gap-2">
-                        📚 Your Notes
+                         Your Notes
                     </button>
                 </div>
 

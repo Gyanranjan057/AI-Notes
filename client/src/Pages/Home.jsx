@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 import { motion } from "motion/react";
-import img from "../assets/img1.png"
+import img from "../assets/Studyimage.jpg"
 import Footer from "../Components/Footer"
 import { useNavigate } from "react-router-dom";
 
@@ -11,10 +11,11 @@ function Home() {
     <div className="min-h-screen overflow-hidden bg-white text-black">
       <Navbar />
 
-      {/* top */}
-      <section className="max-w-7xl mx-auto px-8 pt-32 
-        grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-
+      {/* top  */}
+      <section
+        className="max-w-7xl mx-auto px-8 pt-32 
+        grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
+      >
         <div>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
@@ -24,15 +25,19 @@ function Home() {
             className="transform-gpu"
             style={{ transformStyle: "preserve-3d" }}
           >
-            <motion.h1 className="text-5xl lg:text-6xl font-extrabold leading-tight
-                  bg-gradient-to-br from-black/90 via-black/60 to-black/90 bg-clip-text text-transparent"
-              whileHover={{ y: -4 }}
-              style={{
-                transform: "translateZ(40px)",
-                textShadow: "0 18px 40px rgba(0,0,0,0.25)",
-              }}>
-              Create Smart <br /> AI Nots in Seconds
-            </motion.h1>
+           <motion.h1
+  className="text-5xl lg:text-6xl font-extrabold leading-tight text-black"
+  whileHover={{ y: -4 }}
+  style={{
+    transform: "translateZ(40px)",
+    textShadow: "0 18px 40px rgba(0,0,0,0.25)",
+  }}
+>
+  Create Smart <br />
+  <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+    AI Notes in Seconds
+  </span>
+</motion.h1>
             <motion.p
               whileHover={{ y: -2 }}
               className="mt-6 max-w-xl text-lg bg-gradient-to-br 
@@ -41,57 +46,78 @@ function Home() {
               style={{
                 transform: "translateZ(40px)",
                 textShadow: "0 18px 40px rgba(0,0,0,0.25)",
-              }}>
-              Generates exam-focoused notes, project documentation,
-              flow diagrams and revisio-ready content using AI -faster, cleaner and smarter.
+              }}
+            >
+              Generates exam-focoused notes, project documentation, flow
+              diagrams and revisio-ready content using AI -faster, cleaner and
+              smarter.
             </motion.p>
           </motion.div>
 
-           <motion.button
-            onClick={()=>navigate("/notes")}
-              whileHover={{
-                scale: 1.07
-              }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-10 px-10 py-3 rounded-xl
-                              flex items-center gap-3 bg-gradient-to-br from-black/90 via-black/80 to-black/90 
-                              border border-white/10 text-white font-semibold text-lg shadow-[0_25px_60px_rgba(0,0,0,0.7)]">
-              Get Started 
-            </motion.button>
-            
+          <motion.button
+            onClick={() => navigate("/notes")}
+            whileHover={{
+              scale: 1.07,
+            }}
+            whileTap={{ scale: 0.97 }}
+            className="mt-10 px-10 py-3 rounded-xl
+                        flex items-center gap-3 
+                         bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500
+                          border border-white/10 text-white font-semibold text-lg shadow-[0_25px_60px_rgba(0,0,0,0.7)]"
+          >
+            Get Started
+          </motion.button>
         </div>
 
-        <motion.div 
-        initial={{opacity:0,x:60}}
-        animate={{opacity:1,x:0}}
-        transition={{duration:0.7}}
-        whileHover={{
-          y:-12,
-          rotateX:8,
-          rotateY:-8,
-          scale:1.05,
-        }}
-        className="transform-gpu"
-        style={{transformStyle:"preserve-3d"}}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          whileHover={{
+            y: -12,
+            rotateX: 8,
+            rotateY: -8,
+            scale: 1.05,
+          }}
+          className="transform-gpu"
+          style={{ transformStyle: "preserve-3d" }}
         >
           <div className="overflow-hidden">
-              <img src={img} alt="img"
-              style={{ transform: "translateZ(35px)"}}/>
+            <img
+              src={img}
+              alt="img"
+              style={{ transform: "translateZ(35px)" }}
+            />
           </div>
         </motion.div>
-
       </section>
 
       {/* bottom */}
-      <section className="max-w-6xl mx-auto px-8 py-32 grid grid-cols-1 md:grid-cols-4 gap-10"> 
-        <Feature icon="📘" titel=" Exam Notes" des="HIgh-yield exam-oriented notes with revision points."/>
-        <Feature icon="📂" titel="Project Notes" des="Well-Structured  content for assignments & projects."/>
-        <Feature icon="📊" titel="Diagrams" des="Auto-generated visual diagrams for clarity."/>
-        <Feature icon="⬇️" titel="PDF Download" des="Download clean printable PDFs instantly."/>
+      <section className="max-w-6xl mx-auto px-8 py-32 grid grid-cols-1 md:grid-cols-4 gap-10 ">
+        <Feature
+          icon="📘"
+          titel=" Exam Notes"
+          des="HIgh-yield exam-oriented notes with revision points."
+        />
+        <Feature
+          icon="📂"
+          titel="Project Notes"
+          des="Well-Structured  content for assignments & projects."
+        />
+        <Feature
+          icon="📊"
+          titel="Diagrams"
+          des="Auto-generated visual diagrams for clarity."
+        />
+        <Feature
+          icon="⬇️"
+          titel="PDF Download"
+          des="Download clean printable PDFs instantly."
+        />
       </section>
       <Footer />
     </div>
-  )
+  );
 }
 function Feature({icon,titel,des}){
     return(
