@@ -15,7 +15,6 @@ export const pdfDownload = async (req, res) => {
     res.setHeader("Content-Disposition", 'attachment; filename="ExamNotesAI.pdf"');
     doc.pipe(res);
 
-    // 🔹 Center Topic Name (Title from notes)
     let extractedTitle = "ExamNotes AI";
     const match = result.notes?.match(/#\s*(.*)/);
     if (match && match[1]) {
@@ -25,14 +24,12 @@ export const pdfDownload = async (req, res) => {
     doc.fontSize(20).text(extractedTitle, { align: "center" });
     doc.moveDown();
 
-    // Importance
     let importanceText = "";
 
     if (result.importance === "⭐") importanceText = "Low";
     else if (result.importance === "⭐⭐") importanceText = "Medium";
     else if (result.importance === "⭐⭐⭐") importanceText = "High";
 
-    // Sub Topics
     doc.fontSize(16).text("Sub Topics");
     doc.moveDown(0.5);
 
@@ -53,7 +50,7 @@ export const pdfDownload = async (req, res) => {
 
     doc.moveDown();
 
-    // Notes
+    // Notes ....................
     doc.fontSize(16).text("Notes");
     doc.moveDown(0.5);
   const lines = result.notes.split("\n");
@@ -61,19 +58,19 @@ export const pdfDownload = async (req, res) => {
   const trimmed = line.trim();
 
   if (trimmed.startsWith("## ")) {
-    // Sub-heading → Bold
     const heading = trimmed.replace(/^##\s*/, "");
     doc.moveDown(0.5);
     doc.fontSize(13).font("Helvetica-Bold").text(heading);
     doc.font("Helvetica");
   } else if (trimmed.startsWith("# ")) {
-    // Main heading → Bold + bigger
+
     const heading = trimmed.replace(/^#\s*/, "");
     doc.moveDown(0.5);
     doc.fontSize(14).font("Helvetica-Bold").text(heading);
     doc.font("Helvetica");
   } else if (trimmed !== "") {
-    // Normal line
+
+
     doc.fontSize(12).text(trimmed.replace(/[*]/g, ""));
   } else {
     doc.moveDown(0.3);
@@ -82,7 +79,6 @@ export const pdfDownload = async (req, res) => {
 
     doc.moveDown();
 
-    // Revision Points
     doc.fontSize(16).text("Revision Points");
     doc.moveDown(0.5);
     result.revisionPoints.forEach((p) => {
@@ -91,7 +87,6 @@ export const pdfDownload = async (req, res) => {
 
     doc.moveDown();
 
-    // Questions
     doc.fontSize(16).text("Important Questions");
     doc.moveDown(0.5);
 
