@@ -7,4 +7,5 @@ const pdfRouter = express.Router();
 
 pdfRouter.post("/generate-pdf", isAuth, pdfDownload);
 
-export default pdfRouter;
+export default pdfRouter;    
+
