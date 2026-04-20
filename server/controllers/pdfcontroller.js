@@ -1,192 +1,114 @@
-
-
-import puppeteer from "puppeteer";
-import { marked } from "marked";
-
+ 
+ import PDFDocument from "pdfkit";
+ 
 export const pdfDownload = async (req, res) => {
-  try {
     const { result } = req.body;
 
     if (!result) {
-      return res.status(400).json({ error: "No content provided" });
+        return res.status(400).json({ error: "No content provided" });
     }
 
-    const notesHTML = marked(result.notes || "");
+    const doc = new PDFDocument({ margin: 50 });
+    doc.font("Helvetica");
 
-   
-    let extractedTitle = "Notium Notes";
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'attachment; filename="ExamNotesAI.pdf"');
+    doc.pipe(res);
 
+    // 🔹 Center Topic Name (Title from notes)
+    let extractedTitle = "ExamNotes AI";
     const match = result.notes?.match(/#\s*(.*)/);
     if (match && match[1]) {
-      extractedTitle = match[1];
-    } else {
-      extractedTitle = result.subTopics
-        ? Object.values(result.subTopics)[0]?.[0] || "Notium Notes"
-        : "Notium Notes";
+        extractedTitle = match[1];
     }
 
-    const html = `
-    <html>
-    <head>
-      <style>
-        body {
-          font-family: 'Segoe UI', sans-serif;
-          padding: 40px;
-          color: #111827;
-          line-height: 1.6;
-        }
+    doc.fontSize(20).text(extractedTitle, { align: "center" });
+    doc.moveDown();
 
-        h1 {
-          text-align: center;
-          font-size: 26px;
-          font-weight: bold;
-          color: #4f46e5;
-          margin-bottom: 10px;
-        }
+    // Importance
+    let importanceText = "";
 
-        h2 {
-          color: #4f46e5;
-          margin-top: 25px;
-        }
+    if (result.importance === "⭐") importanceText = "Low";
+    else if (result.importance === "⭐⭐") importanceText = "Medium";
+    else if (result.importance === "⭐⭐⭐") importanceText = "High";
 
-        .section {
-          margin-bottom: 20px;
-        }
+    // Sub Topics
+    doc.fontSize(16).text("Sub Topics");
+    doc.moveDown(0.5);
 
-        ul {
-          padding-left: 20px;
-        }
+    Object.entries(result.subTopics).forEach(([star, topics]) => {
+        let label = "";
 
-        .badge {
-          text-align: center;
-          color: gray;
-          margin-bottom: 20px;
-        }
+        if (star === "⭐") label = "Low Priority";
+        else if (star === "⭐⭐") label = "Medium Priority";
+        else if (star === "⭐⭐⭐") label = "High Priority";
 
-        .divider {
-          border-top: 1px solid #e5e7eb;
-          margin: 20px 0;
-        }
+        doc.moveDown(0.5);
+        doc.fontSize(13).text(`${label}:`);
 
-        .box {
-          background: #f9fafb;
-          padding: 15px;
-          border-radius: 10px;
-          margin-top: 10px;
-        }
-      </style>
-    </head>
-
-    <body>
-
-      <!-- Dynamic Heading -->
-      <h1>${extractedTitle}</h1>
-      <div class="badge">Importance: ${result.importance}</div>
-      <div class="divider"></div>
-
-      <!-- Sub Topics -->
-      <div class="section">
-        <h2>⭐ Sub Topics</h2>
-        ${Object.entries(result.subTopics || {})
-          .map(
-            ([star, topics]) => `
-            <div class="box">
-              <b>${star} Topics:</b>
-              <ul>
-                ${(topics || []).map((t) => `<li>${t}</li>`).join("")}
-              </ul>
-            </div>
-          `
-          )
-          .join("")}
-      </div>
-
-      <!-- Notes -->
-      <div class="section">
-        <h2>📝 Notes</h2>
-        <div class="box">
-          ${notesHTML}
-        </div>
-      </div>
-
-      <!-- Revision -->
-      <div class="section">
-        <h2>⚡ Revision Points</h2>
-        <div class="box">
-          <ul>
-            ${(result.revisionPoints || [])
-              .map((p) => `<li>${p}</li>`)
-              .join("")}
-          </ul>
-        </div>
-      </div>
-
-      <!-- Questions -->
-      <div class="section">
-        <h2>❓ Important Questions</h2>
-
-        <div class="box">
-          <b>Short Questions:</b>
-          <ul>
-            ${(result.questions?.short || [])
-              .map((q) => `<li>${q}</li>`)
-              .join("")}
-          </ul>
-        </div>
-
-        <div class="box">
-          <b>Long Questions:</b>
-          <ul>
-            ${(result.questions?.long || [])
-              .map((q) => `<li>${q}</li>`)
-              .join("")}
-          </ul>
-        </div>
-
-        <div class="box">
-          <b>Diagram Question:</b>
-          <p>${result.questions?.diagram || ""}</p>
-        </div>
-
-      </div>
-
-    </body>
-    </html>
-    `;
-
-   
-const browser = await puppeteer.launch({
-  headless: "new",
-  args: ["--no-sandbox", "--disable-setuid-sandbox"], // ✅ REQUIRED
-});
-    const page = await browser.newPage();
-
-    await page.setContent(html, { waitUntil: "domcontentloaded" });
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: {
-        top: "20px",
-        bottom: "20px",
-        left: "20px",
-        right: "20px",
-      },
+        topics.forEach((t) => {
+            doc.fontSize(12).text(`• ${t}`);
+        });
     });
 
-    await browser.close();
+    doc.moveDown();
 
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": "attachment; filename=Notium_Notes.pdf",
-    });
+    // Notes
+    doc.fontSize(16).text("Notes");
+    doc.moveDown(0.5);
+  const lines = result.notes.split("\n");
+  lines.forEach((line) => {
+  const trimmed = line.trim();
 
-    res.send(pdfBuffer);
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "PDF generation failed" });
+  if (trimmed.startsWith("## ")) {
+    // Sub-heading → Bold
+    const heading = trimmed.replace(/^##\s*/, "");
+    doc.moveDown(0.5);
+    doc.fontSize(13).font("Helvetica-Bold").text(heading);
+    doc.font("Helvetica");
+  } else if (trimmed.startsWith("# ")) {
+    // Main heading → Bold + bigger
+    const heading = trimmed.replace(/^#\s*/, "");
+    doc.moveDown(0.5);
+    doc.fontSize(14).font("Helvetica-Bold").text(heading);
+    doc.font("Helvetica");
+  } else if (trimmed !== "") {
+    // Normal line
+    doc.fontSize(12).text(trimmed.replace(/[*]/g, ""));
+  } else {
+    doc.moveDown(0.3);
   }
+});
+
+    doc.moveDown();
+
+    // Revision Points
+    doc.fontSize(16).text("Revision Points");
+    doc.moveDown(0.5);
+    result.revisionPoints.forEach((p) => {
+        doc.fontSize(12).text(`• ${p}`);
+    });
+
+    doc.moveDown();
+
+    // Questions
+    doc.fontSize(16).text("Important Questions");
+    doc.moveDown(0.5);
+
+    doc.fontSize(13).text("Short Questions:");
+    result.questions.short.forEach((q) => {
+        doc.fontSize(12).text(`• ${q}`);
+    });
+
+    doc.moveDown(0.5);
+    doc.fontSize(13).text("Long Questions:");
+    result.questions.long.forEach((q) => {
+        doc.fontSize(12).text(`• ${q}`);
+    });
+
+    doc.moveDown(0.5);
+    doc.fontSize(13).text("Diagram Question:");
+    doc.fontSize(12).text(result.questions.diagram);
+
+    doc.end();
 };
