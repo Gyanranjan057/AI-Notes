@@ -1,12 +1,33 @@
-import express from "express"
-import { googleAuth,signup, login, logout} from "../controllers/auth.controller.js"
 
 
-const authRouter =express.Router()
+import express from "express";
+import isAuth from "../middleware/isAuth.js";
 
-authRouter.post("/google", googleAuth)
-authRouter.post("/signup", signup)
-authRouter.post("/login", login) 
-authRouter.get("/logout", logout)
+import {
+  googleAuth,
+  signup,
+  login,
+  logout,
+  sendOtp,
+  verifyOtp,
+  resetPassword,
+  getCurrentUser
+} from "../controllers/auth.controller.js";
 
-export default authRouter
+const authRouter = express.Router();
+
+authRouter.post("/google", googleAuth);
+authRouter.post("/signup", signup);
+authRouter.post("/login", login);
+authRouter.get("/logout", logout);
+
+
+authRouter.post("/forgot-password/send-otp", sendOtp);
+authRouter.post("/forgot-password/verify-otp", verifyOtp);
+authRouter.post("/forgot-password/reset", resetPassword);
+
+
+authRouter.get("/me", isAuth, getCurrentUser);
+
+
+export default authRouter;

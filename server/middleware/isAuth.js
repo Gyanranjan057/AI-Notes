@@ -7,6 +7,7 @@ const isAuth = async (req, res, next) => {
 
     if (!token) {
       return res.status(200).json({message: "No Token"});
+      
     }
 
     let verifyToken = jwt.verify(token, process.env.JWT_SECRET);

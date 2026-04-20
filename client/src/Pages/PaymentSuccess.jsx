@@ -10,15 +10,24 @@ import { useNavigate } from 'react-router-dom';
 function PaymentSuccess() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    useEffect(()=>{
-        getCurrentuser(dispatch)
 
-        const t = setTimeout(()=>{
-            navigate("/")
-        }, 5000);
 
-        return ()=>clearTimeout(t)
-    }, [])
+useEffect(() => {
+  const fetchUser = async () => {
+    await new Promise(res => setTimeout(res, 2000)); // ⏳ wait for webhook
+    await getCurrentuser(dispatch);
+  };
+
+  fetchUser();
+
+  const t = setTimeout(() => {
+    navigate("/");
+  }, 5000);
+
+  return () => clearTimeout(t);
+}, []);
+
+
     return (
         <div className='min-h-screen flex flex-col items-center justify-center p-4 gap-4'>
             <motion.div
@@ -50,4 +59,8 @@ function PaymentSuccess() {
         </div>
     )
 }
+<<<<<<< HEAD
 export default PaymentSuccess
+=======
+export default PaymentSuccess;
+>>>>>>> a43a792cbd33f5f7eea36b0a69f614b13d1516f8

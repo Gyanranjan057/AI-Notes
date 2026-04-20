@@ -1,11 +1,10 @@
 
-
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "User", 
+    default: "User",
   },
 
   email: {
@@ -15,12 +14,12 @@ const userSchema = new mongoose.Schema({
   },
 
   password: {
-    type: String, 
+    type: String,
   },
 
   credits: {
     type: Number,
-    default: 300, 
+    default: 300,
     min: 0,
   },
 
@@ -34,6 +33,15 @@ const userSchema = new mongoose.Schema({
     ref: "Note",
     default: [],
   },
+
+  
+  otp: String,
+  otpExpiry: Date,
+  otpVerified: {
+    type: Boolean,
+    default: false,
+  },
+
 }, { timestamps: true });
 
 const usermodel = mongoose.model("User", userSchema);
