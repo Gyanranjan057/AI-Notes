@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { getCurrentuser} from "../services/api.js";
 import { useNavigate } from 'react-router-dom';
 
-function PaymentSucess() {
+function PaymentSuccess() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(()=>{
@@ -37,7 +37,7 @@ function PaymentSucess() {
             animate={{opacity:1, y:0}}
             transition={{delay:0.3}}
             className="text-2xl font-bold text-green-600">
-                Payment Sucessfull Credits Added
+                Payment Successfull Credits Added
             </motion.h1>
 
             <motion.p 
@@ -50,4 +50,4 @@ function PaymentSucess() {
         </div>
     )
 }
-export default PaymentSucess
+export default PaymentSuccess
