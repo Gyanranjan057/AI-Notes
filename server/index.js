@@ -20,7 +20,7 @@ stripeWebhook
 
 
 app.use(cors(
-    {origin:"https://ai-notes-c-qowp.onrender.com" ,
+    {origin:"http://localhost:5173" ,
     credentials:true,
     methods:["GET","POST","PUT","DELETE","OPTIONS"]
    }
