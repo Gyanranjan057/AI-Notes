@@ -1,19 +1,24 @@
 import axios from "axios"
 import {serverurl} from "../App"
 import { setuserData } from "../redux/userSlice";
-export const getCurrentuser = async(dispatch)=>{
-    try{
-        const result = await axios.get(serverurl + "/api/user/currentuser", {withCredentials:true})
-        dispatch(setuserData(result.data))
-    }catch(error){
-          console.log(error);
-    }
-}
+
+
+export const getCurrentuser = async (dispatch) => {
+  try {
+    const res = await axios.get(serverurl + "/api/auth/me", {
+      withCredentials: true,
+    });
+
+    dispatch(setuserData(res.data));
+  } catch (error) {
+    dispatch(setuserData(null));
+  }
+};
 
 export const generateNotes = async (payload) => {
     try {
         const result = await axios.post(serverurl+ "/api/notes/generate-notes", payload, {withCredentials:true})
-        console.log(result.data);
+        // console.log(result.data);
         return result.data
         
     } catch (error) {

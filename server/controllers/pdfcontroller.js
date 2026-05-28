@@ -1,4 +1,5 @@
-import PDFDocument from "pdfkit";
+ 
+ import PDFDocument from "pdfkit";
  
 export const pdfDownload = async (req, res) => {
     const { result } = req.body;
@@ -6,33 +7,36 @@ export const pdfDownload = async (req, res) => {
     if (!result) {
         return res.status(400).json({ error: "No content provided" });
     }
-    const doc = new PDFDocument({ margin: 50 })
+
+    const doc = new PDFDocument({ margin: 50 });
     doc.font("Helvetica");
 
-    res.setHeader("Content-Type", "application/pdf")
-    res.setHeader("Content-Disposition", 'attachment; filename="ExamNotesAI.pdf"')
-    doc.pipe(res)
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'attachment; filename="ExamNotesAI.pdf"');
+    doc.pipe(res);
 
-    //Title
-    doc.fontSize(20).text("ExamNotes AI", { align: "center" });
+ 
+    let extractedTitle = "ExamNotes AI";
+    const match = result.notes?.match(/#\s*(.*)/);
+    if (match && match[1]) {
+        extractedTitle = match[1];
+    }
+
+    doc.fontSize(20).text(extractedTitle, { align: "center" });
     doc.moveDown();
+
+ 
     let importanceText = "";
 
     if (result.importance === "⭐") importanceText = "Low";
     else if (result.importance === "⭐⭐") importanceText = "Medium";
     else if (result.importance === "⭐⭐⭐") importanceText = "High";
 
-    doc.fontSize(14).text(`Importance: `);
-    // doc.fontSize(14).text(`Importance:${result.importance}`);
-    doc.moveDown();
-
-    //Sub Topics
+ 
     doc.fontSize(16).text("Sub Topics");
     doc.moveDown(0.5);
-    Object.entries(result.subTopics).forEach(([star, topics]) => {
-        // doc.moveDown(0.5);
-        // doc.fontSize(13).text(`${star} Topics:`);
 
+    Object.entries(result.subTopics).forEach(([star, topics]) => {
         let label = "";
 
         if (star === "⭐") label = "Low Priority";
@@ -49,14 +53,36 @@ export const pdfDownload = async (req, res) => {
 
     doc.moveDown();
 
-    //Notes
+ 
+    // Notes ............
     doc.fontSize(16).text("Notes");
     doc.moveDown(0.5);
-    doc.fontSize(12).text(result.notes.replace(/[#*]/g, ""));
+  const lines = result.notes.split("\n");
+  lines.forEach((line) => {
+  const trimmed = line.trim();
+
+  if (trimmed.startsWith("## ")) {
+ 
+    const heading = trimmed.replace(/^##\s*/, "");
+    doc.moveDown(0.5);
+    doc.fontSize(13).font("Helvetica-Bold").text(heading);
+    doc.font("Helvetica");
+  } else if (trimmed.startsWith("# ")) {
+ 
+    const heading = trimmed.replace(/^#\s*/, "");
+    doc.moveDown(0.5);
+    doc.fontSize(14).font("Helvetica-Bold").text(heading);
+    doc.font("Helvetica");
+  } else if (trimmed !== "") { 
+    doc.fontSize(12).text(trimmed.replace(/[*]/g, ""));
+  } else {
+    doc.moveDown(0.3);
+  }
+});
 
     doc.moveDown();
 
-    //Revision Points
+ 
     doc.fontSize(16).text("Revision Points");
     doc.moveDown(0.5);
     result.revisionPoints.forEach((p) => {
@@ -65,7 +91,7 @@ export const pdfDownload = async (req, res) => {
 
     doc.moveDown();
 
-    //Questions
+ 
     doc.fontSize(16).text("Important Questions");
     doc.moveDown(0.5);
 
@@ -85,4 +111,7 @@ export const pdfDownload = async (req, res) => {
     doc.fontSize(12).text(result.questions.diagram);
 
     doc.end();
-}
+};
+
+
+
